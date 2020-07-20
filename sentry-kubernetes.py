@@ -40,7 +40,7 @@ def _listify_env(name, default=None):
 
 MANGLE_NAMES = _listify_env("MANGLE_NAMES")
 EVENT_LEVELS = _listify_env("EVENT_LEVELS", ["warning", "error"])
-REASONS_EXCLUDED = _listify_env("REASON_FILTER")
+REASONS_INCLUDED = _listify_env("REASON_FILTER")
 COMPONENTS_EXCLUDED = _listify_env("COMPONENT_FILTER")
 DEPRECATED_EVENT_NAMESPACE = (
     [os.getenv("EVENT_NAMESPACE")] if os.getenv("EVENT_NAMESPACE") else None
@@ -131,7 +131,7 @@ def watch_loop():
 
         if event.reason:
             reason = event.reason
-            if REASONS_EXCLUDED and reason in REASONS_EXCLUDED:
+            if reason not in REASONS_INCLUDED:
                 continue
 
         if event.involved_object and event.involved_object.namespace:
